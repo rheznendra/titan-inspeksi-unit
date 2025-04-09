@@ -5,7 +5,7 @@
 	<!-- TABLE  -->
 	<x-card separator>
 		<x-form wire:submit="searchUnit">
-			<x-input label="No Registrasi" wire:model="no_registrasi">
+			<x-input label="No Registrasi" wire:model="no_registrasi" autocomplete="off">
 				<x-slot:append>
 					<x-button class="join-item btn-primary" icon="o-magnifying-glass" wire:click="searchUnit" />
 				</x-slot:append>

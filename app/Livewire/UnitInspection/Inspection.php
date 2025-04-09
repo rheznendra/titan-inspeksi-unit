@@ -25,7 +25,7 @@ class Inspection extends Component
     public function searchUnit()
     {
         $nr = $this->no_registrasi ?? request()->get('no_registrasi');
-        if ($nr == '123') {
+        if ($nr == 'R20250804140534') {
             $this->unitInformation = [
                 'no_unit' => 'ABC1234_A',
                 'jenis_kendaraan' => 'TRAILER',
