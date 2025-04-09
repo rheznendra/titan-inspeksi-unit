@@ -20,12 +20,8 @@ return new class extends Migration
             // $table->boolean('exist');
             // $table->enum('condition', UnitCondition::cases());
             // $table->longText('description')->nullable();
-            $table->boolean('inspection_requirement_met')->default(false);
-            $table->boolean('inspection_operational_permit')->default(false);
-            $table->longText('inspection_operational_permit_description')->nullable();
-            $table->boolean('inspection_other')->default(false);
-            $table->longText('inspection_other_description')->nullable();
-
+            $table->enum('permit', array_column(\App\Enums\InspectionPermit::cases(), 'value'));
+            $table->longText('permit_note')->nullable();
             $table->longText('inspection_notes')->nullable();
             $table->timestamps();
             $table->softDeletes();

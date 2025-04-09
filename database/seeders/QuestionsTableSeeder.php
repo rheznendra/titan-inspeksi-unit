@@ -75,7 +75,10 @@ class QuestionsTableSeeder extends Seeder
         ];
 
         foreach ($questions as $question) {
-            \App\Models\Question::create($question);
+            \App\Models\Question::create([
+                'question' => $question['question'],
+                'author' => fake()->randomElement(\App\Enums\InspectionAuthor::cases())->value,
+            ]);
         }
     }
 }

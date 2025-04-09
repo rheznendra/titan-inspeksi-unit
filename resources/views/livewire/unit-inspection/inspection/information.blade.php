@@ -1,0 +1,34 @@
+<div class="w-full overflow-x-auto">
+	<table class="border-1 border-base-content/15 table table-auto rounded-lg">
+		<tr class="whitespace-nowrap border-0">
+			<th>No Unit</th>
+			<td>: {{ $unitInformation['no_unit'] ?? '-' }}</td>
+			<th>Lokasi</th>
+			<td>: {{ $unitInformation['lokasi'] ?? '-' }}</td>
+		</tr>
+		<tr class="whitespace-nowrap border-0">
+			<th>Jenis Kendaraan</th>
+			<td>: {{ $unitInformation['jenis_kendaraan'] ?? '-' }}</td>
+			<th>Nomor Seri Mesin</th>
+			<td>: {{ $unitInformation['nomor_seri_mesin'] ?? '-' }}</td>
+		</tr>
+		<tr class="whitespace-nowrap border-0">
+			<th>No Polisi</th>
+			<td>: {{ $unitInformation['nomor_polisi'] ?? '-' }}</td>
+			<th>Kilometer</th>
+			<td>: {{ $unitInformation['kilometer'] ?? '-' }}</td>
+		</tr>
+		<tr class="whitespace-nowrap border-0">
+			<th>Tahun Pembuatan</th>
+			<td>: {{ $unitInformation['tahun_pembuatan'] ?? '-' }}</td>
+			<th>Hours Meter</th>
+			<td>: {{ $unitInformation['hours_meter'] ?? '-' }}</td>
+		</tr>
+		<tr class="whitespace-nowrap border-0">
+			<th>Perusahaan</th>
+			<td>: {{ $unitInformation['perusahaan'] ?? '-' }}</td>
+			<th>Brand</th>
+			<td>: {{ $unitInformation['brand'] ?? '-' }}</td>
+		</tr>
+	</table>
+</div>
