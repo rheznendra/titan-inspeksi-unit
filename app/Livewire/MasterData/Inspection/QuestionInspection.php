@@ -36,7 +36,6 @@ class QuestionInspection extends Component
     {
         return [
             ['key' => 'no', 'label' => '#', 'class' => 'w-1', 'sortable' => false],
-            ['key' => 'owner_id', 'label' => 'Owner', 'class' => 'w-20'],
             ['key' => 'question', 'label' => 'Question', 'class' => 'w-64'],
             ['key' => 'created_at', 'label' => 'Created At', 'class' => 'w-64'],
         ];
@@ -50,8 +49,7 @@ class QuestionInspection extends Component
      */
     public function questions(): LengthAwarePaginator
     {
-        return Question::select('id', 'owner_id', 'question', 'created_at')
-            ->with('ownerQuestion:id,question')
+        return Question::select('id', 'question', 'created_at')
             ->orderBy(...array_values($this->sortBy))
             ->paginate();
     }

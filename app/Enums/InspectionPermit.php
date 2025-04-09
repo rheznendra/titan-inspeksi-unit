@@ -17,6 +17,15 @@ enum InspectionPermit: string
         };
     }
 
+    public function shortLabel(): string
+    {
+        return match ($this) {
+            self::REQUIREMENT_MET => 'Diijinkan',
+            self::OPERATIONAL_PERMIT => 'Tidak diijinkan',
+            self::OTHER => 'Lainnya',
+        };
+    }
+
     public function hasNote(): bool
     {
         return match ($this) {

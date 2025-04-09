@@ -21,5 +21,5 @@ Route::prefix('unit-inspection')->name('unit-inspection.')->group(function () {
         return redirect()->route('unit-inspection.inspection');
     });
     Route::get('inspection', \App\Livewire\UnitInspection\Inspection::class)->name('inspection');
-    Route::get('report', \App\Livewire\UnitInspection\Report::class)->name('report');
+    Route::get('history', \App\Livewire\UnitInspection\History::class)->name('history');
 });

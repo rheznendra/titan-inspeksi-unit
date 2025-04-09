@@ -58,7 +58,7 @@
 				@endif
 				<x-menu-sub title="Unit Inspection" icon="s-document-magnifying-glass">
 					<x-menu-item title="Inspection" icon="c-clipboard-document-list" link="{{ route('unit-inspection.inspection') }}" />
-					<x-menu-item title="Report" icon="s-document-chart-bar" link="{{ route('unit-inspection.report') }}" />
+					<x-menu-item title="History" icon="mdi.history" link="{{ route('unit-inspection.history') }}" />
 				</x-menu-sub>
 			</x-menu>
 		</x-slot:sidebar>
