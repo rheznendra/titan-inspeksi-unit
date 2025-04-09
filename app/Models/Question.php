@@ -13,7 +13,6 @@ class Question extends Model
 
     protected $fillable = [
         'ulid',
-        'owner_id',
         'question',
     ];
 
@@ -25,15 +24,5 @@ class Question extends Model
     public function uniqueIds(): array
     {
         return ['ulid'];
-    }
-
-    public function ownerQuestion(): BelongsTo
-    {
-        return $this->belongsTo(Question::class, 'owner_id', 'id')->latest();
-    }
-
-    public function childQuestions()
-    {
-        return $this->hasMany(Question::class, 'owner_id', 'id');
     }
 }

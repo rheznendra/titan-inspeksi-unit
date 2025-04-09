@@ -17,56 +17,41 @@
 			</tr>
 		</thead>
 		<tbody>
-			@php
-				$iteration = 0;
-			@endphp
 			@foreach ($questions as $item)
 				<tr>
 					<td class="border-base-content/15 border text-center">{{ $loop->iteration }}.</td>
 					<td class="border-base-content/15 border">{{ $item->question }}</td>
 					<td class="border-base-content/15 border text-center">
-						<input class="radio" id="{{ $item->ulid }}_yes" type="radio" value="{{ $item->ulid }}_yes" wire:model="form.availability.{{ $iteration }}" />
+						<input id="{{ $item->ulid }}_yes" type="radio" value="1" wire:model="form.availability.{{ $item->id }}" @class([
+							'radio',
+							'radio-error' => $errors->has('form.availability.' . $item->id),
+						])
+							@disabled(!isset($unitInformation['author'])) />
 					</td>
 					<td class="border-base-content/15 border text-center">
-						<input class="radio" id="{{ $item->ulid }}_no" type="radio" value="{{ $item->ulid }}_no" wire:model="form.availability.{{ $iteration }}" />
+						<input id="{{ $item->ulid }}_no" type="radio" value="0" wire:model="form.availability.{{ $item->id }}" @class([
+							'radio',
+							'radio-error' => $errors->has('form.availability.' . $item->id),
+						])
+							@disabled(!isset($unitInformation['author'])) />
 					</td>
 					<td class="border-base-content/15 border text-center">
-						<input class="radio" id="{{ $item->ulid }}_good" type="radio" value="{{ $item->ulid }}_good" wire:model="form.condition.{{ $iteration }}" />
+						<input id="{{ $item->ulid }}_good" type="radio" value="1" wire:model="form.condition.{{ $item->id }}" @class([
+							'radio',
+							'radio-error' => $errors->has('form.condition.' . $item->id),
+						])
+							@disabled(!isset($unitInformation['author'])) />
 					</td>
 					<td class="border-base-content/15 border text-center">
-						<input class="radio" id="{{ $item->ulid }}_bad" type="radio" value="{{ $item->ulid }}_bad" wire:model="form.condition.{{ $iteration }}" />
+						<input id="{{ $item->ulid }}_bad" type="radio" value="0" wire:model="form.condition.{{ $item->id }}" @class([
+							'radio',
+							'radio-error' => $errors->has('form.condition.' . $item->id),
+						]) @disabled(!isset($unitInformation['author'])) />
 					</td>
 					<td class="border-base-content/15 border">
-						<x-input wire:model="form.note.{{ $iteration }}" />
+						<x-input wire:model="form.note.{{ $item->id }}" :disabled="!isset($unitInformation['author'])" />
 					</td>
 				</tr>
-				@foreach ($item->childQuestions()->get() as $itemChild)
-					@php
-						$iteration++;
-					@endphp
-					<tr class="border-0">
-						<td class="border-base-content/15 border-x"></td>
-						<td class="border-base-content/15 border">{{ $itemChild->question }}</td>
-						<td class="border-base-content/15 border text-center">
-							<input class="radio" id="{{ $itemChild->ulid }}_yes" type="radio" value="{{ $itemChild->ulid }}_yes" wire:model="form.availability.{{ $iteration }}" />
-						</td>
-						<td class="border-base-content/15 border text-center">
-							<input class="radio" id="{{ $itemChild->ulid }}_no" type="radio" value="{{ $itemChild->ulid }}_no" wire:model="form.availability.{{ $iteration }}" />
-						</td>
-						<td class="border-base-content/15 border text-center">
-							<input class="radio" id="{{ $itemChild->ulid }}_good" type="radio" value="{{ $itemChild->ulid }}_good" wire:model="form.condition.{{ $iteration }}" />
-						</td>
-						<td class="border-base-content/15 border text-center">
-							<input class="radio" id="{{ $itemChild->ulid }}_bad" type="radio" value="{{ $itemChild->ulid }}_bad" wire:model="form.condition.{{ $iteration }}" />
-						</td>
-						<td class="border-base-content/15 border">
-							<x-input wire:model="form.note.{{ $iteration }}" />
-						</td>
-					</tr>
-				@endforeach
-				@php
-					$iteration++;
-				@endphp
 			@endforeach
 		</tbody>
 	</table>

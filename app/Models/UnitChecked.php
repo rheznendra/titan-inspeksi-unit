@@ -10,13 +10,11 @@ class UnitChecked extends Model
     use HasUlids;
 
     protected $fillable = [
-        'no_unit',
+        'no_registrasi',
         'answered_questions',
-        'inspection_requirement_met',
-        'inspection_operational_permit',
-        'inspection_operational_permit_description',
-        'inspection_other',
-        'inspection_other_description',
+        'permit',
+        'permit_note',
+        'inspection_date',
         'inspection_notes',
     ];
 

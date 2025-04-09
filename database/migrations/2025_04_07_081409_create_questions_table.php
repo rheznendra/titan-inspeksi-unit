@@ -15,16 +15,9 @@ return new class extends Migration
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
             $table->ulid('ulid')->unique();
-            $table->bigInteger('owner_id')->unsigned()->nullable();
             $table->longText('question');
             $table->enum('author', array_column(InspectionAuthor::cases(), 'value'));
             $table->timestamps();
-
-            $table->foreign('owner_id')
-                ->references('id')
-                ->on('questions')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
         });
     }
 

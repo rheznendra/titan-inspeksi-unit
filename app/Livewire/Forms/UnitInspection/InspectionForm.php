@@ -3,6 +3,7 @@
 namespace App\Livewire\Forms\UnitInspection;
 
 use App\Enums\InspectionPermit;
+use App\Models\Question;
 use Illuminate\Validation\Rule;
 use Livewire\Form;
 
@@ -12,21 +13,22 @@ class InspectionForm extends Form
     public $condition = [];
     public $note = [];
     public $permit = null;
-    public ?string $permit_note = null, $inspection_notes = null;
+    public ?string $permit_note = null, $inspection_notes = null, $inspection_date = null;
 
-    public function rules(): array
+    public function rules($questions): array
     {
         $rules =  [
-            'availability' => 'required|array',
-            'availability.*' => 'required',
-            'condition' => 'required|array',
-            'condition.*' => 'required',
-            'note' => 'nullable|array',
-            'note.*' => 'string|max:100',
             'permit' => ['required', Rule::enum(InspectionPermit::class)],
-            'inspection_date' => 'required|date',
+            'inspection_date' => 'required|date|before_or_equal:' . now()->format('M d Y'),
             'inspection_notes' => 'nullable|string|max:100',
         ];
+
+        foreach ($questions as $question) {
+            $rules['availability.' . $question->id] = 'required|boolean';
+            $rules['condition.' . $question->id] = 'required|boolean';
+            $rules['note.' . $question->id] = 'nullable|string|max:100';
+        }
+
         if ($this->permit && InspectionPermit::from($this->permit)->hasNote()) {
             $rules['permit_note'] = [
                 'required',
@@ -35,6 +37,15 @@ class InspectionForm extends Form
             ];
         }
         return $rules;
+    }
+
+    public function messages(): array
+    {
+        return [
+            'availability.*.required' => ':Attribute wajib dipilih.',
+            'condition.*.required' => ':Attribute wajib dipilih.',
+            'permit.required' => ':Attribute wajib dipilih.'
+        ];
     }
 
     public function attributes(): array
@@ -48,6 +59,7 @@ class InspectionForm extends Form
             'note.*' => 'keterangan',
             'permit' => 'izin',
             'permit_note' => 'catatan izin',
+            'inspection_date' => 'tanggal inspeksi',
             'inspection_notes' => 'catatan inspeksi'
         ];
     }
