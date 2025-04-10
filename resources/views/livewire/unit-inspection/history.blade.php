@@ -21,7 +21,7 @@
 			@endscope
 
 			@scope('cell_permit', $unit)
-				<span class="whitespace-nowrap">
+				<span class="tooltip whitespace-nowrap" data-tip="{{ $unit->permit->label() }}">
 					{{ $unit->permit->shortLabel() }}
 				</span>
 			@endscope
