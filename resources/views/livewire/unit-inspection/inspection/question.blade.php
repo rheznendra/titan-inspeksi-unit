@@ -18,6 +18,14 @@
 		</thead>
 		<tbody>
 			@foreach ($questions as $item)
+				@php
+					$disabled = true;
+					if (isset($unitInformation['author']) && $this->unitInformationForm->no_registrasi) {
+					    if ($unitInformation['author'] === $item->author) {
+					        $disabled = false;
+					    }
+					}
+				@endphp
 				<tr>
 					<td class="border-base-content/15 border text-center">{{ $loop->iteration }}.</td>
 					<td class="border-base-content/15 border">{{ $item->question }}</td>
@@ -26,30 +34,30 @@
 							'radio',
 							'radio-error' => $errors->has('form.availability.' . $item->id),
 						])
-							@disabled(!isset($unitInformation['author'])) />
+							@disabled($disabled) />
 					</td>
 					<td class="border-base-content/15 border text-center">
 						<input id="{{ $item->ulid }}_no" type="radio" value="0" wire:model="form.availability.{{ $item->id }}" @class([
 							'radio',
 							'radio-error' => $errors->has('form.availability.' . $item->id),
 						])
-							@disabled(!isset($unitInformation['author'])) />
+							@disabled($disabled) />
 					</td>
 					<td class="border-base-content/15 border text-center">
 						<input id="{{ $item->ulid }}_good" type="radio" value="1" wire:model="form.condition.{{ $item->id }}" @class([
 							'radio',
 							'radio-error' => $errors->has('form.condition.' . $item->id),
 						])
-							@disabled(!isset($unitInformation['author'])) />
+							@disabled($disabled) />
 					</td>
 					<td class="border-base-content/15 border text-center">
 						<input id="{{ $item->ulid }}_bad" type="radio" value="0" wire:model="form.condition.{{ $item->id }}" @class([
 							'radio',
 							'radio-error' => $errors->has('form.condition.' . $item->id),
-						]) @disabled(!isset($unitInformation['author'])) />
+						]) @disabled($disabled) />
 					</td>
 					<td class="border-base-content/15 border">
-						<x-input wire:model="form.note.{{ $item->id }}" :disabled="!isset($unitInformation['author'])" />
+						<x-input wire:model="form.note.{{ $item->id }}" :disabled="$disabled" />
 					</td>
 				</tr>
 			@endforeach

@@ -28,7 +28,8 @@
 
 			@scope('actions', $unit)
 				<div class="flex">
-					<x-button class="btn-ghost btn-circle text-primary" icon="mdi.file-pdf-box" tooltip="Export PDF" />
+					<x-button class="btn-ghost btn-circle text-primary" icon="mdi.file-pdf-box" tooltip="Export PDF" link="{{ route('unit-inspection.history.pdf') }}" />
+					{{-- <x-button class="btn-ghost btn-circle text-primary" icon="mdi.file-pdf-box" tooltip="Export PDF" wire:click="exportPdf" /> --}}
 					<x-button class="btn-ghost btn-circle text-error" icon="mdi.trash-can" wire:click="delete('{{ $unit['ulid'] }}')" spinner tooltip="Delete" />
 				</div>
 			@endscope

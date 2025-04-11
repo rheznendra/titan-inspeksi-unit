@@ -31,3 +31,35 @@
         @apply bg-base-content/5 font-bold
     }
 }
+
+.pdf-checkbox {
+    display: flex;
+    align-items: center;
+}
+
+.pdf-checkbox::before {
+    content: '';
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 1.75rem;
+    height: 1.25rem;
+    border: 2px solid rgba(0, 0, 0);
+    margin: 4px 4px 4px 0;
+}
+
+.pdf-checkbox-checked::before {
+    content: '✓';
+    font-weight: bolder;
+}
+
+.note-container {
+    height: 95vh;
+    min-height: 95vh;
+    text-align: justify;
+    background-image: linear-gradient(#000 1px, transparent 0px);
+    background-size: 100% 27px;
+    background-position-y: 24px;
+    line-height: 27px;
+    font-size: 14px;
+}

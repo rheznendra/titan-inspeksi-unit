@@ -2,13 +2,14 @@
 
 namespace App\Livewire\UnitInspection;
 
+use function Spatie\LaravelPdf\Support\pdf;
+use Mary\Traits\Toast;
 use Livewire\WithPagination;
 use Livewire\Component;
-use Illuminate\Pagination\LengthAwarePaginator;
-use App\Models\UnitChecked;
-use Illuminate\Database\QueryException;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
-use Mary\Traits\Toast;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Database\QueryException;
+use App\Models\UnitChecked;
 
 class History extends Component
 {
@@ -49,6 +50,14 @@ class History extends Component
         }
     }
 
+    public function exportPdf()
+    {
+        $pdf = pdf()->view('livewire.unit-inspection.history.pdf')
+            ->name('invoice-2023-04-10.pdf')
+            ->download();
+        return $pdf;
+    }
+
     public function headers()
     {
         return [
@@ -70,7 +79,7 @@ class History extends Component
 
     public function render()
     {
-        return view('livewire.unit-inspection.history', [
+        return view('livewire.unit-inspection.history.index', [
             'headers' => $this->headers(),
             'unitChecked' => $this->unitChecked(),
         ]);

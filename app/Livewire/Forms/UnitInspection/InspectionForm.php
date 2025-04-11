@@ -15,12 +15,13 @@ class InspectionForm extends Form
     public $permit = null;
     public ?string $permit_note = null, $inspection_notes = null, $inspection_date = null;
 
-    public function rules($questions): array
+    public function rules($questions, $author): array
     {
+        $questions = $questions->where('author', '=', $author);
         $rules =  [
             'permit' => ['required', Rule::enum(InspectionPermit::class)],
             'inspection_date' => 'required|date|before_or_equal:' . now()->format('M d Y'),
-            'inspection_notes' => 'nullable|string|max:100',
+            'inspection_notes' => 'nullable|string|max:3750',
         ];
 
         foreach ($questions as $question) {

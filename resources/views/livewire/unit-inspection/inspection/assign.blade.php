@@ -15,6 +15,6 @@
 	@endforeach
 
 	<div class="w-full sm:w-auto sm:flex-1 sm:pl-4">
-		<x-datepicker wire:model="form.inspection_date" label="Tanggal Inspeksi" icon="o-calendar" :disabled="!isset($unitInformation['author'])" />
+		<x-datepicker wire:model="form.inspection_date" label="Tanggal Inspeksi" icon="o-calendar" :disabled="!isset($unitInformation['author'])" required />
 	</div>
 </div>
