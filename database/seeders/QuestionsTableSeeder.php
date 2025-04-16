@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Enums\InspectionAuthor;
 use Illuminate\Database\Seeder;
 
 class QuestionsTableSeeder extends Seeder
@@ -75,9 +75,14 @@ class QuestionsTableSeeder extends Seeder
         ];
 
         foreach ($questions as $question) {
+            $author = collect(InspectionAuthor::cases())
+                ->reject(fn($case) => $case === InspectionAuthor::SHE)
+                ->random()
+                ->value;
+
             \App\Models\Question::create([
                 'question' => $question['question'],
-                'author' => fake()->randomElement(\App\Enums\InspectionAuthor::cases())->value,
+                'author' => $author,
             ]);
         }
     }
