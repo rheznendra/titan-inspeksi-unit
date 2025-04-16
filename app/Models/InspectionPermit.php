@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class InspectionPermit extends Model
 {
@@ -13,22 +14,34 @@ class InspectionPermit extends Model
 
     protected $fillable = [
         'ulid_inspection_unit',
-        'front_image',
-        'back_image',
         'permit',
         'permit_note',
+        'tc_name',
+        'operation_name',
+        'she_name',
         'inspection_date',
         'inspection_notes',
+        'tc_filled_at',
+        'operation_filled_at',
+        'she_filled_at',
     ];
 
     protected $casts = [
         'permit' => InspectionPermit::class,
         'inspection_date' => 'datetime:d-m-Y',
-        'updated_at' => 'datetime',
+        'tc_filled_at' => 'datetime',
+        'operation_filled_at' => 'datetime',
+        'she_filled_at' => 'datetime',
         'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
-    public function unit()
+    /**
+     * Get the unit that owns the InspectionPermit
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function unit(): BelongsTo
     {
         return $this->belongsTo(InspectionUnit::class, 'ulid_inspection_unit', 'ulid');
     }

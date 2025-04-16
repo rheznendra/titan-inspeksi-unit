@@ -13,11 +13,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('inspection_answers', function (Blueprint $table) {
-            $table->foreignUlid('ulid_inspection_author')->constrained('inspection_authors', 'ulid')->restrictOnDelete();
+            $table->foreignUlid('ulid_inspection_unit')->constrained('inspection_units', 'ulid')->restrictOnDelete();
             $table->foreignUlid('ulid_question')->constrained('questions', 'ulid')->restrictOnDelete();
             $table->boolean('availability')->nullable();
             $table->boolean('condition')->nullable();
             $table->string('note')->nullable();
+            $table->enum('author', array_filter(array_column(InspectionAuthor::cases(), 'value'), fn($value) => $value !== InspectionAuthor::SHE->value));
         });
     }
 

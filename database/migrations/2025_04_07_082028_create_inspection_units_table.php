@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->ulid('ulid')->unique();
             // Unit Information
+            $table->char('registration_number', 15);
             $table->char('unit_number', 9);
             $table->string('vehicle_type', 15);
             $table->char('plate_number', 9);

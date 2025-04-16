@@ -12,15 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('inspection_permits', function (Blueprint $table) {
-            $table->foreignUlid('ulid_inspection_unit')
-                ->constrained('inspection_units', 'ulid')
-                ->restrictOnDelete();
-            $table->string('front_image')->nullable();
-            $table->string('back_image')->nullable();
+            $table->foreignUlid('ulid_inspection_unit')->constrained('inspection_units', 'ulid')->restrictOnDelete();
             $table->enum('permit', array_column(\App\Enums\InspectionPermit::cases(), 'value'))->nullable();
             $table->longText('permit_note')->nullable();
+            $table->string('tc_name', 50)->nullable();
+            $table->string('operation_name', 50)->nullable();
+            $table->string('she_name', 50)->nullable();
             $table->date('inspection_date')->nullable();
             $table->longText('inspection_notes')->nullable();
+            $table->timestamp('tc_filled_at')->nullable();
+            $table->timestamp('operation_filled_at')->nullable();
+            $table->timestamp('she_filled_at')->nullable();
             $table->timestamps();
         });
     }

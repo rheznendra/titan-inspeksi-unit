@@ -24,8 +24,6 @@ class InspectionUnit extends Model
         'kilometer',
         'hours_meter',
         'brand',
-        'answered_questions_tc',
-        'answered_questions_operation',
     ];
 
     protected $casts = [

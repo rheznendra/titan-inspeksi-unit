@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\InspectionAuthor;
-use App\Models\InspectionAuthor as ModelsInspectionAuthor;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -19,16 +17,17 @@ class InspectionAnswer extends Model
         'availability',
         'condition',
         'note',
+        'author',
     ];
 
     /**
-     * Get the author that owns the InspectionAnswer
+     * Get the unit that owns the InspectionAnswer
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function author(): BelongsTo
+    public function unit(): BelongsTo
     {
-        return $this->belongsTo(ModelsInspectionAuthor::class, 'ulid_inspection_unit', 'ulid');
+        return $this->belongsTo(InspectionUnit::class, 'ulid_inspection_unit', 'ulid');
     }
 
     /**
