@@ -25,7 +25,7 @@ class AppBrand extends Component
                 <a href="/" wire:navigate>
                     <!-- Hidden when collapsed -->
                     <div {{ $attributes->class(["hidden-when-collapsed"]) }}>
-                        <div class="flex items-center gap-2">
+                        <div class="flex items-center gap-2 w-fit">
                             <x-icon name="mdi.dump-truck" class="w-6 -mb-1.5 text-amber-600" />
                             <span class="font-bold text-3xl me-3 bg-gradient-to-r from-amber-600 to-yellow-500 bg-clip-text text-transparent">
                                 {{ config('app.name') }}
