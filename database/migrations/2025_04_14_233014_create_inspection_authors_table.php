@@ -12,14 +12,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('questions', function (Blueprint $table) {
+        Schema::create('inspection_authors', function (Blueprint $table) {
             $table->id();
             $table->ulid('ulid')->unique();
-            $table->longText('question');
-            $table->enum('author', array_filter(
-                array_column(InspectionAuthor::cases(), 'value'),
-                fn($enum) => $enum !== InspectionAuthor::SHE->value
-            ));
+            $table->foreignUlid('ulid_inspection_unit')->constrained('inspection_units', 'ulid')->restrictOnDelete();
+            $table->char('registration_number', 15);
+            $table->string('name', 50);
+            $table->enum('author', array_column(InspectionAuthor::cases(), 'value'));
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('questions');
+        Schema::dropIfExists('inspection_authors');
     }
 };
