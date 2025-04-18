@@ -56,20 +56,15 @@
 					</tr>
 				</thead>
 				<tbody>
-					@foreach (\App\Models\Question::get() as $item)
-						@php
-							$kelengkapan = rand(0, 1);
-							$kondisi = rand(0, 1);
-						@endphp
+					@foreach ($data->answered_questions as $item)
 						<tr class="text-xs font-bold">
 							<td class="border-base-content border px-2 py-[0.75px] text-center">{{ $loop->iteration }}</td>
-							<td class="border-base-content border px-2 py-[0.75px]">{{ $item->question }}</td>
-							<td class="border-base-content border px-2 py-[0.75px] text-center">{{ $kelengkapan ? '√' : null }}</td>
-							<td class="border-base-content border px-2 py-[0.75px] text-center">{{ $kelengkapan ? null : '√' }}</td>
-							<td class="border-base-content border px-2 py-[0.75px] text-center">{{ $kondisi ? '√' : null }}</td>
-							<td class="border-base-content border px-2 py-[0.75px] text-center">{{ $kondisi ? null : '√' }}</td>
-							{{-- <td class="border-base-content border px-2 py-[0.75px]">{{ rand(0, 1) ? fake()->sentence(3) : null }}</td> --}}
-							<td class="border-base-content border px-2 py-[0.75px]"></td>
+							<td class="border-base-content border px-2 py-[0.75px]">{{ $item['question'] }}</td>
+							<td class="border-base-content border px-2 py-[0.75px] text-center">{{ $item['availability'] ? '√' : null }}</td>
+							<td class="border-base-content border px-2 py-[0.75px] text-center">{{ !$item['availability'] ? '√' : null }}</td>
+							<td class="border-base-content border px-2 py-[0.75px] text-center">{{ $item['condition'] ? '√' : null }}</td>
+							<td class="border-base-content border px-2 py-[0.75px] text-center">{{ !$item['condition'] ? '√' : null }}</td>
+							<td class="border-base-content border px-2 py-[0.75px]">{{ $item['note'] }}</td>
 						</tr>
 					@endforeach
 				</tbody>
@@ -80,9 +75,20 @@
 		<div class="mb-3 mt-6 text-sm">
 			<span class="ps-2 text-sm font-bold">Beri tanda √ dibawah ini sesuai hasil inspeksi</span>
 			<div class="flex flex-col">
-				<div class="pdf-checkbox text-sm">Diijinkan dan telah memenuhi persyaratan</div>
-				<div class="pdf-checkbox text-sm">Tidak diijinkan untuk dioperasikan (<span class="mx-2 mt-3 flex-grow border-b border-dotted border-black"></span>)</div>
-				<div class="pdf-checkbox pdf-checkbox-checked text-sm/3.5">Lainnya (<span class="mx-2 flex-grow border-b border-dotted border-black">{{ fake()->sentence(10) }}</span>)</div>
+				@foreach ($inspection_permits::cases() as $item)
+					<div @class([
+						'pdf-checkbox text-sm',
+						'pdf-checkbox-checked' => $item === $data->permit,
+					])>
+						{{ $item->label() }}
+						@if ($item->hasNote())
+							(<span @class([
+								'mt-3' => $item !== $data->permit || !$data->permit_note,
+								'mx-2 flex-grow border-b border-dotted border-black text-sm/3.5',
+							])>{{ $item === $data->permit ? $data->permit_note : null }}</span>)
+						@endif
+					</div>
+				@endforeach
 			</div>
 		</div>
 
@@ -102,7 +108,7 @@
 					<td class="border-1 pt-14 font-bold">John Doe</td>
 					<td class="border-1 pt-14 font-bold">John Doe</td>
 					<td class="border-1 pt-14 font-bold">Jane Doe</td>
-					<td class="border-1 font-bold">01/01/2023</td>
+					<td class="border-1 font-bold">{{ $data->inspection_date->format('d/m/Y') }}</td>
 					<td class="border-1 whitespace-nowrap pt-14 font-bold uppercase">Manager Departemen</td>
 				</tr>
 			</tbody>
@@ -117,7 +123,7 @@
 		<div class="h-screen min-h-screen w-full">
 			<p class="mb-2 text-sm font-bold">Catatan :</p>
 			<div class="note-container">
-				{{ fake()->text(3000) }}
+				{{ $data->inspection_notes }}
 			</div>
 		</div>
 	</div>

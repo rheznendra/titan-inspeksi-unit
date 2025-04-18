@@ -1,4 +1,3 @@
-<hr class="border-base-content/25 my-5" />
 <div class="w-full overflow-x-auto">
 	<table class="table-sm table table-auto">
 		<thead class="bg-base-content/9 text-base-content text-center">
@@ -20,13 +19,13 @@
 			@foreach ($questions as $item)
 				@php
 					$disabled = true;
-					if (isset($unitInformation['author']) && $this->unitInformationForm->no_registrasi) {
-					    if ($unitInformation['author'] === $item->author) {
+					if ($this->unitInformationForm->unitExists) {
+					    if ($unitInformationForm->author === $item->author && $unitInformationForm->author !== $she) {
 					        $disabled = false;
 					    }
 					}
 				@endphp
-				<tr>
+				<tr @class(['bg-base-content/5' => $disabled])>
 					<td class="border-base-content/15 border text-center">{{ $loop->iteration }}.</td>
 					<td class="border-base-content/15 border">{{ $item->question }}</td>
 					<td class="border-base-content/15 border text-center">

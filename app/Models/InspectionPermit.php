@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\InspectionPermit as EnumsInspectionPermit;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -14,6 +15,8 @@ class InspectionPermit extends Model
 
     protected $fillable = [
         'ulid_inspection_unit',
+        'front_image',
+        'back_image',
         'permit',
         'permit_note',
         'tc_name',
@@ -27,7 +30,7 @@ class InspectionPermit extends Model
     ];
 
     protected $casts = [
-        'permit' => InspectionPermit::class,
+        'permit' => EnumsInspectionPermit::class,
         'inspection_date' => 'datetime:d-m-Y',
         'tc_filled_at' => 'datetime',
         'operation_filled_at' => 'datetime',

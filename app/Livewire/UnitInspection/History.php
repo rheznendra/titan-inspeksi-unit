@@ -2,21 +2,24 @@
 
 namespace App\Livewire\UnitInspection;
 
-use function Spatie\LaravelPdf\Support\pdf;
 use Mary\Traits\Toast;
 use Livewire\WithPagination;
 use Livewire\Component;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
+use Illuminate\Validation\Rule;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Database\QueryException;
-use App\Models\UnitChecked;
+use App\Models\InspectionUnit;
+use App\Livewire\Forms\Drawer\HistoryDrawerForm;
+use App\Enums\InspectionPermit;
 
 class History extends Component
 {
     use Toast, WithPagination;
 
     public array $sortBy;
-    public bool $withDeleted = false;
+    public bool $drawer = true;
+    public HistoryDrawerForm $historyDrawerForm;
 
     public function mount()
     {
@@ -37,7 +40,7 @@ class History extends Component
 
     public function deleteConfirmed($data)
     {
-        $unitChecked = UnitChecked::where('ulid', $data['ulid'])->first();
+        $unitChecked = InspectionUnit::where('ulid', $data['ulid'])->first();
         if (!$unitChecked) {
             $this->error('Data tidak ditemukan');
             return;
@@ -50,12 +53,16 @@ class History extends Component
         }
     }
 
-    public function exportPdf()
+    public function search()
     {
-        $pdf = pdf()->view('livewire.unit-inspection.history.pdf')
-            ->name('invoice-2023-04-10.pdf')
-            ->download();
-        return $pdf;
+        $this->historyDrawerForm->resetValidation();
+        $this->historyDrawerForm->validate([
+            'no_registrasi' => 'nullable|string|max:255',
+            'permit' => ['nullable', Rule::enum(InspectionPermit::class)],
+            'inspection_date' => 'nullable|date_format:Y-m-d',
+            'withTrashed' => 'nullable|boolean',
+        ]);
+        $this->drawer = false;
     }
 
     public function headers()
@@ -64,16 +71,19 @@ class History extends Component
             ['key' => 'no', 'label' => '#', 'class' => 'w-1', 'sortable' => false],
             ['key' => 'no_registrasi', 'label' => 'No Registrasi', 'class' => 'w-20'],
             ['key' => 'permit', 'label' => 'Izin', 'class' => 'w-20'],
-            ['key' => 'inspection_date', 'label' => 'Tanggal Inspeksi', 'class' => 'w-20 text-center'],
+            ['key' => 'inspection_date', 'label' => 'Tanggal Inspeksi', 'class' => 'w-20 text-center', 'format' => fn($row, $field) => $field->format('d-m-Y')],
             ['key' => 'created_at', 'label' => 'Created At', 'class' => 'w-64 text-center'],
         ];
     }
 
     public function unitChecked(): LengthAwarePaginator
     {
-        return UnitChecked::select('ulid', 'no_registrasi', 'permit', 'inspection_date', 'created_at')
+        return InspectionUnit::with('permit')
+            // ->when($this->historyDrawerForm->no_registrasi, fn($query) => $query->whereLike('no_registrasi', $this->historyDrawerForm->no_registrasi))
+            // ->when($this->historyDrawerForm->permit, fn($query) => $query->where('permit', $this->historyDrawerForm->permit))
+            // ->when($this->historyDrawerForm->inspection_date, fn($query) => $query->whereDate('inspection_date', $this->historyDrawerForm->inspection_date))
+            // ->when($this->historyDrawerForm->withTrashed, fn($query) => $query->withTrashed())
             ->orderBy(...array_values($this->sortBy))
-            ->when($this->withDeleted, fn($query) => $query->withTrashed())
             ->paginate();
     }
 
@@ -82,6 +92,8 @@ class History extends Component
         return view('livewire.unit-inspection.history.index', [
             'headers' => $this->headers(),
             'unitChecked' => $this->unitChecked(),
+            'inspectionPermits' => asSelectArray(InspectionPermit::cases()),
+            'yearsRange' => yearsRange(),
         ]);
     }
 }

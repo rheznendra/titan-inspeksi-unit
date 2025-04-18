@@ -2,8 +2,10 @@
 
 namespace App\Livewire\Forms\UnitInspection;
 
+use App\Enums\InspectionAuthor;
 use App\Enums\InspectionPermit;
 use App\Models\Question;
+use App\Rules\base64Image;
 use Illuminate\Validation\Rule;
 use Livewire\Form;
 
@@ -12,27 +14,43 @@ class InspectionForm extends Form
     public $availability = [];
     public $condition = [];
     public $note = [];
-    public $permit = null;
-    public ?string $permit_note = null, $inspection_notes = null, $inspection_date = null;
+    public ?string $front_image = null;
+    public ?string $back_image = null;
+    public ?string $permit = null;
+    public ?string $permit_note = null;
+    public ?string $inspection_notes = null;
+    public ?string $inspection_date = null;
+    public ?string $tc_name = null;
+    public ?string $operation_name = null;
+    public ?string $she_name = null;
 
-    public function rules($questions, $author): array
+    public function rules($questions, $author, $hasPermit): array
     {
         $questions = $questions->where('author', '=', $author);
         $rules =  [
-            'permit' => ['required', Rule::enum(InspectionPermit::class)],
-            'inspection_date' => 'required|date|before_or_equal:' . now()->format('M d Y'),
+            'permit' => ['nullable', Rule::requiredIf($author === InspectionAuthor::SHE->value), Rule::enum(InspectionPermit::class)],
+            'inspection_date' => [
+                !$hasPermit ? 'required' : 'nullable',
+                'date',
+                'before_or_equal:' . now()->format('M d Y')
+            ],
             'inspection_notes' => 'nullable|string|max:3750',
         ];
 
+        if ($author === InspectionAuthor::TC->value) {
+            $rules['front_image'] = ['required', new base64Image()];
+            $rules['back_image'] = ['required', new base64Image()];
+        }
+
         foreach ($questions as $question) {
-            $rules['availability.' . $question->id] = 'required|boolean';
-            $rules['condition.' . $question->id] = 'required|boolean';
+            $rules['availability.' . $question->id] = 'nullable|boolean';
+            $rules['condition.' . $question->id] = 'nullable|boolean';
             $rules['note.' . $question->id] = 'nullable|string|max:100';
         }
 
         if ($this->permit && InspectionPermit::from($this->permit)->hasNote()) {
             $rules['permit_note'] = [
-                'required',
+                'nullable',
                 'string',
                 'max:100'
             ];
@@ -58,6 +76,8 @@ class InspectionForm extends Form
             'condition.*' => 'kondisi',
             'note' => 'keterangan',
             'note.*' => 'keterangan',
+            'front_image' => 'foto depan',
+            'back_image' => 'foto belakang',
             'permit' => 'izin',
             'permit_note' => 'catatan izin',
             'inspection_date' => 'tanggal inspeksi',
