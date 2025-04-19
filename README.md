@@ -31,15 +31,20 @@ To get started with Titan Inspeksi Unit, follow these steps:
     ```bash
     npm install
     ```
-6. Build the dependencies
-   On Local
+6. Build the dependencies\
+
+    on Local
+
     ```bash
-    npm run build
+    npm run dev
     ```
+
     or Production
+
     ```bash
     npm run build
     ```
+
 7. Setup Database on ENV
     ```bash
     DB_CONNECTION=mysql
@@ -49,7 +54,7 @@ To get started with Titan Inspeksi Unit, follow these steps:
     DB_USERNAME=DB_USER
     DB_PASSWORD=DB_PASSWORD
     ```
-8. Migrate default user & config
+8. Migrate database & default data for table `question`
     ```bash
     php artisan migrate --seed
     ```
