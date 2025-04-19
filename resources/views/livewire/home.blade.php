@@ -13,22 +13,36 @@
 				{{ ($unitChecked->currentPage() - 1) * $unitChecked->perPage() + $loop->index + 1 }}.
 			@endscope
 
-			@scope('cell_created_at', $unit)
-				<span class="whitespace-nowrap">{{ $unit->created_at->format('d M, Y H:i:s') }}</span>
-			@endscope
-
 			@scope('cell_permit', $unit)
-				@if ($unit->permit()->exists())
+				@if ($unit->permit()->exists() && $unit->permit->permit)
 					<span class="tooltip whitespace-nowrap" data-tip="{{ $unit->permit->permit->label() }}">
 						{{ $unit->permit->permit->shortLabel() }}
 					</span>
+				@else
+					<span>-</span>
 				@endif
+			@endscope
+
+			@scope('cell_inspection_date', $unit)
+				<span class="whitespace-nowrap">{{ $unit->permit->inspection_date->format('d M, Y') }}</span>
+			@endscope
+
+			@scope('cell_tc_filled_at', $unit)
+				<span class="whitespace-nowrap">{{ $unit->permit->tc_filled_at?->format('d M, Y H:i:s') ?? '-' }}</span>
+			@endscope
+
+			@scope('cell_operation_filled_at', $unit)
+				<span class="whitespace-nowrap">{{ $unit->permit->operation_filled_at?->format('d M, Y H:i:s') ?? '-' }}</span>
+			@endscope
+
+			@scope('cell_she_filled_at', $unit)
+				<span class="whitespace-nowrap">{{ $unit->permit->she_filled_at?->format('d M, Y H:i:s') ?? '-' }}</span>
 			@endscope
 
 			@scope('actions', $unit)
 				<div class="flex">
 					<x-button class="btn-ghost btn-circle text-primary" icon="mdi.file-pdf-box" tooltip="Export PDF" link="{{ route('pdf', $unit->ulid) }}" no-wire-navigate />
-					<x-button class="btn-ghost btn-circle text-success" icon="o-eye" tooltip="Lihat Data" />
+					<x-button class="btn-ghost btn-circle text-success" icon="c-eye" tooltip="Lihat Data" link="{{ route('inspection', ['no_registrasi' => $unit->registration_number]) }}" />
 				</div>
 			@endscope
 		</x-table>

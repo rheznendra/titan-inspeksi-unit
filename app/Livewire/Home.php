@@ -69,10 +69,12 @@ class Home extends Component
     {
         return [
             ['key' => 'no', 'label' => '#', 'class' => 'w-1', 'sortable' => false],
-            ['key' => 'no_registrasi', 'label' => 'No Registrasi', 'class' => 'w-20'],
+            ['key' => 'registration_number', 'label' => 'No Registrasi', 'class' => 'w-20'],
             ['key' => 'permit', 'label' => 'Izin', 'class' => 'w-20'],
             ['key' => 'inspection_date', 'label' => 'Tanggal Inspeksi', 'class' => 'w-20 text-center'],
-            ['key' => 'created_at', 'label' => 'Created At', 'class' => 'w-64 text-center'],
+            ['key' => 'tc_filled_at', 'label' => 'Diisi oleh TC', 'class' => 'w-20 text-center'],
+            ['key' => 'operation_filled_at', 'label' => 'Diisi oleh Operation', 'class' => 'w-20 text-center'],
+            ['key' => 'she_filled_at', 'label' => 'Diisi oleh SHE', 'class' => 'w-20 text-center'],
         ];
     }
 
