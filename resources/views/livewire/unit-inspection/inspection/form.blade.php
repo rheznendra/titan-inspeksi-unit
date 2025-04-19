@@ -1,11 +1,11 @@
-@php
-	$she = \App\Enums\InspectionAuthor::SHE->value;
-@endphp
 <div>
 	<!-- HEADER -->
-	<x-header title="Inspection Form" separator progress-indicator />
+	<x-header separator progress-indicator>
+		<x-slot:title class="flex items-center">
+			<x-button class="btn-primary btn-xs me-3" icon="c-arrow-left" link="{{ route('home') }}" tooltip-bottom="Kembali" /> Form Inspeksi
+		</x-slot:title>
+	</x-header>
 
-	<!-- TABLE  -->
 	<x-card separator>
 		@include('livewire.unit-inspection.inspection.information')
 		<hr class="border-base-content/25 my-5" />
@@ -28,17 +28,6 @@
 				</ul>
 			</x-alert>
 		@endif
-		@php
-			$showActions = false;
-			if ($unitInformationForm->unitExists) {
-			    $permit = $unitInformationForm->unit->permit();
-			    if ($unitInformationForm->author !== $she) {
-			        $showActions = !$permit->exists() || !$permit->filledBySHE()->exists();
-			    } elseif ($permit->exists()) {
-			        $showActions = $permit->filledByTC()->filledByOperation()->notFilledBySHE()->exists();
-			    }
-			}
-		@endphp
 		@if ($showActions)
 			<x-slot:actions>
 				<x-button class="btn-error" label="Reset" wire:click="resetForm" />

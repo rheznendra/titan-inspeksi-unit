@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\UnitInspection;
+namespace App\Livewire;
 
 use Mary\Traits\Toast;
 use Livewire\WithPagination;
@@ -10,16 +10,16 @@ use Illuminate\Validation\Rule;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Database\QueryException;
 use App\Models\InspectionUnit;
-use App\Livewire\Forms\Drawer\HistoryDrawerForm;
+use App\Livewire\Forms\Drawer\HomeDrawerForm;
 use App\Enums\InspectionPermit;
 
-class History extends Component
+class Home extends Component
 {
     use Toast, WithPagination;
 
     public array $sortBy;
-    public bool $drawer = true;
-    public HistoryDrawerForm $historyDrawerForm;
+    public bool $drawer = false;
+    public HomeDrawerForm $historyDrawerForm;
 
     public function mount()
     {
@@ -71,29 +71,27 @@ class History extends Component
             ['key' => 'no', 'label' => '#', 'class' => 'w-1', 'sortable' => false],
             ['key' => 'no_registrasi', 'label' => 'No Registrasi', 'class' => 'w-20'],
             ['key' => 'permit', 'label' => 'Izin', 'class' => 'w-20'],
-            ['key' => 'inspection_date', 'label' => 'Tanggal Inspeksi', 'class' => 'w-20 text-center', 'format' => fn($row, $field) => $field->format('d-m-Y')],
+            ['key' => 'inspection_date', 'label' => 'Tanggal Inspeksi', 'class' => 'w-20 text-center'],
             ['key' => 'created_at', 'label' => 'Created At', 'class' => 'w-64 text-center'],
         ];
     }
 
     public function unitChecked(): LengthAwarePaginator
     {
-        return InspectionUnit::with('permit')
-            // ->when($this->historyDrawerForm->no_registrasi, fn($query) => $query->whereLike('no_registrasi', $this->historyDrawerForm->no_registrasi))
-            // ->when($this->historyDrawerForm->permit, fn($query) => $query->where('permit', $this->historyDrawerForm->permit))
-            // ->when($this->historyDrawerForm->inspection_date, fn($query) => $query->whereDate('inspection_date', $this->historyDrawerForm->inspection_date))
-            // ->when($this->historyDrawerForm->withTrashed, fn($query) => $query->withTrashed())
+        return InspectionUnit::has('permit')
+            ->when($this->historyDrawerForm->no_registrasi, fn($query) => $query->whereLike('no_registrasi', $this->historyDrawerForm->no_registrasi))
+            ->when($this->historyDrawerForm->permit, fn($query) => $query->where('permit', $this->historyDrawerForm->permit))
+            ->when($this->historyDrawerForm->inspection_date, fn($query) => $query->whereDate('inspection_date', $this->historyDrawerForm->inspection_date))
             ->orderBy(...array_values($this->sortBy))
             ->paginate();
     }
 
     public function render()
     {
-        return view('livewire.unit-inspection.history.index', [
+        return view('livewire.home', [
             'headers' => $this->headers(),
             'unitChecked' => $this->unitChecked(),
             'inspectionPermits' => asSelectArray(InspectionPermit::cases()),
-            'yearsRange' => yearsRange(),
         ]);
     }
 }

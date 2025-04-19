@@ -1,5 +1,4 @@
 @php
-	$tc = \App\Enums\InspectionAuthor::TC->value;
 	$disabled = !$unitInformationForm->unitExists;
 @endphp
 <div class="border-t-base-content/15 border-t-1 mt-5 flex flex-col pt-3">

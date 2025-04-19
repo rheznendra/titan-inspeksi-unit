@@ -16,6 +16,10 @@ class Inspection extends Component
 {
     use Toast;
 
+    public string $she;
+    public string $tc;
+    public string $operation;
+
     public array $unitInformation = [];
     public InspectionForm $form;
     public UnitInformationForm $unitInformationForm;
@@ -31,6 +35,9 @@ class Inspection extends Component
 
     public function mount()
     {
+        $this->tc = InspectionAuthor::TC->value;
+        $this->she = InspectionAuthor::SHE->value;
+        $this->operation = InspectionAuthor::OPERATION->value;
         $this->searchUnit();
     }
 
@@ -263,9 +270,24 @@ class Inspection extends Component
             ->get();
     }
 
+    private function showActions(): bool
+    {
+        $showActions = false;
+        if ($this->unitInformationForm->unitExists) {
+            $permit = $this->unitInformationForm->unit->permit();
+            if ($this->unitInformationForm->author !== $this->she) {
+                $showActions = !$permit->exists() || !$permit->filledBySHE()->exists();
+            } elseif ($permit->exists()) {
+                $showActions = $permit->filledByTC()->filledByOperation()->notFilledBySHE()->exists();
+            }
+        }
+        return $showActions;
+    }
+
     public function render()
     {
         return view('livewire.unit-inspection.inspection.form', [
+            'showActions' => $this->showActions(),
             'questions' => $this->questions(),
             'inspectionPermits' => asSelectArray(InspectionPermit::cases()),
         ]);

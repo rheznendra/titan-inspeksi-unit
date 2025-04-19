@@ -36,30 +36,13 @@
 			{{-- MENU --}}
 			<x-menu activate-by-route>
 
-				{{-- User --}}
-				@if ($user = auth()->user())
-					<x-menu-separator />
-
-					<x-list-item class="!-my-2 -mx-2 rounded" value="name" :item="$user" sub-value="email" no-separator no-hover>
-						<x-slot:actions>
-							<x-button class="btn-circle btn-ghost btn-xs" icon="o-power" tooltip-left="logoff" no-wire-navigate link="/logout" />
-						</x-slot:actions>
-					</x-list-item>
-
-					<x-menu-separator />
-				@endif
-
-				<x-menu-item title="Home" icon="o-sparkles" link="/" />
+				<x-menu-item title="Inspeksi" icon="c-clipboard-document-list" link="{{ route('home') }}" />
 
 				@if (config('app.env') !== 'production')
 					<x-menu-sub title="Master Data" icon="o-list-bullet">
 						<x-menu-item title="Inspection Question" icon="o-question-mark-circle" link="{{ route('master-data.inspection.questions') }}" />
 					</x-menu-sub>
 				@endif
-				<x-menu-sub title="Unit Inspection" icon="s-document-magnifying-glass">
-					<x-menu-item title="Inspection" icon="c-clipboard-document-list" link="{{ route('unit-inspection.inspection') }}" />
-					<x-menu-item title="History" icon="mdi.history" link="{{ route('unit-inspection.history.index') }}" />
-				</x-menu-sub>
 			</x-menu>
 		</x-slot:sidebar>
 
