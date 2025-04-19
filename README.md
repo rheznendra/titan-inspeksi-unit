@@ -31,7 +31,7 @@ To get started with Titan Inspeksi Unit, follow these steps:
     ```bash
     npm install
     ```
-6. Build the dependencies\
+6. Build the dependencies
 
     on Local
 
