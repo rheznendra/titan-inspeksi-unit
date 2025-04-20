@@ -45,14 +45,10 @@ To get started with Titan Inspeksi Unit, follow these steps:
     npm run build
     ```
 
-7. Cache the view & icons
+7. Cache the view
 
     ```bash
     php artisan view:cache
-    ```
-
-    ```bash
-    php artisan icons:cache
     ```
 
 8. Setup Database on ENV
