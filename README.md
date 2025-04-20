@@ -22,7 +22,7 @@ To get started with Titan Inspeksi Unit, follow these steps:
     ```
 4. Copy .env && generate APP_KEY
     ```bash
-    cp .env.copy .env
+    cp .env.example .env
     ```
     ```bash
     php artisan key:generate
