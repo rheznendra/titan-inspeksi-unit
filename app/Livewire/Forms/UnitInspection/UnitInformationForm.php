@@ -62,7 +62,7 @@ class UnitInformationForm extends Form
         //     'no_registrasi' => $this->no_registrasi,
         // ]);
         // if ($api->failed() || $api->status() !== 200 || $api->json('status') !== 'success') {
-        //     return $this->addError('no_registrasi', 'No Registrasi tidak ditemukan');
+        //     abort(403, 'No Registrasi tidak ditemukan');
         // }
 
         if ($this->no_registrasi !== 'R20250804140534') {
