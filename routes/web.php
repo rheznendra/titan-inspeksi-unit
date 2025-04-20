@@ -5,7 +5,9 @@ use App\Livewire\MasterData\Inspection\QuestionInspection;
 use App\Livewire\Home;
 use App\Http\Controllers\Export\UnitInspectionExport;
 
-
+\Livewire\Livewire::setScriptRoute(function ($handle) {
+    return Route::get(config('app.url') . '/public/vendor/livewire/livewire.js', $handle);
+});
 
 Route::get('/', Home::class)->name('home');
 Route::get('/inspeksi', \App\Livewire\UnitInspection\Inspection::class)->name('inspection');
