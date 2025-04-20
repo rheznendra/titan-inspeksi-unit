@@ -10,7 +10,7 @@ To get started with Titan Inspeksi Unit, follow these steps:
 
 1. Clone the repository:
     ```bash
-    git clone git@github.com:rheznendra/titan-inspeksi-unit.git inspeksi-unit
+    git clone -b production git@github.com:rheznendra/titan-inspeksi-unit.git inspeksi-unit
     ```
 2. Navigate to the project directory:
     ```bash
