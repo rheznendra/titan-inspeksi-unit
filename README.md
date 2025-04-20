@@ -45,7 +45,17 @@ To get started with Titan Inspeksi Unit, follow these steps:
     npm run build
     ```
 
-7. Setup Database on ENV
+7. Cache the view & icons
+
+    ```bash
+    php artisan view:cache
+    ```
+
+    ```bash
+    php artisan icons:cache
+    ```
+
+8. Setup Database on ENV
     ```bash
     DB_CONNECTION=mysql
     DB_HOST=DB_HOST
@@ -54,8 +64,8 @@ To get started with Titan Inspeksi Unit, follow these steps:
     DB_USERNAME=DB_USER
     DB_PASSWORD=DB_PASSWORD
     ```
-8. Migrate database & default data for table `question`
+9. Migrate database & default data for table `question`
     ```bash
     php artisan migrate --seed
     ```
-9. Done, all setup!
+10. Done, all setup!
