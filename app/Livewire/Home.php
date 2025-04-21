@@ -59,8 +59,7 @@ class Home extends Component
         $this->historyDrawerForm->validate([
             'no_registrasi' => 'nullable|string|max:255',
             'permit' => ['nullable', Rule::enum(InspectionPermit::class)],
-            'inspection_date' => 'nullable|date_format:Y-m-d',
-            'withTrashed' => 'nullable|boolean',
+            'inspection_date' => 'nullable|date',
         ]);
         $this->drawer = false;
     }
@@ -81,9 +80,14 @@ class Home extends Component
     public function unitChecked(): LengthAwarePaginator
     {
         return InspectionUnit::has('permit')
-            ->when($this->historyDrawerForm->no_registrasi, fn($query) => $query->whereLike('no_registrasi', $this->historyDrawerForm->no_registrasi))
-            ->when($this->historyDrawerForm->permit, fn($query) => $query->where('permit', $this->historyDrawerForm->permit))
-            ->when($this->historyDrawerForm->inspection_date, fn($query) => $query->whereDate('inspection_date', $this->historyDrawerForm->inspection_date))
+            ->when($this->historyDrawerForm->no_registrasi, fn($query) => $query->whereLike('registration_number', "%{$this->historyDrawerForm->no_registrasi}%"))
+            ->when($this->historyDrawerForm->permit, fn($query) => $query->whereHas('permit', fn($query) => $query->where('permit', $this->historyDrawerForm->permit)))
+            ->when(
+                $this->historyDrawerForm->inspection_date,
+                fn($query) =>
+                $query->whereHas('permit', fn($query) =>
+                $query->whereDate('inspection_date', $this->historyDrawerForm->inspection_date))
+            )
             ->orderBy(...array_values($this->sortBy))
             ->paginate();
     }

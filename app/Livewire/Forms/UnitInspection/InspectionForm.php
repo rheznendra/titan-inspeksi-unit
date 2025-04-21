@@ -24,8 +24,10 @@ class InspectionForm extends Form
     public ?string $operation_name = null;
     public ?string $she_name = null;
 
-    public function rules($questions, $author, $hasPermit): array
+    public function rules($questions, $unit): array
     {
+        $author = $unit->author;
+        $hasPermit = $unit->unit->permit()->exists();
         $questions = $questions->where('author', '=', $author);
         $rules =  [
             'permit' => ['nullable', Rule::requiredIf($author === InspectionAuthor::SHE->value), Rule::enum(InspectionPermit::class)],
@@ -38,8 +40,8 @@ class InspectionForm extends Form
         ];
 
         if ($author === InspectionAuthor::TC->value) {
-            $rules['front_image'] = ['required', new base64Image()];
-            $rules['back_image'] = ['required', new base64Image()];
+            $rules['front_image'] = [$unit->unit->permit?->front_image ? 'nullable' : 'required', new base64Image()];
+            $rules['back_image'] = [$unit->unit->permit?->back_image ? 'nullable' : 'required', new base64Image()];
         }
 
         foreach ($questions as $question) {

@@ -56,14 +56,14 @@
 					</tr>
 				</thead>
 				<tbody>
-					@foreach ($data->answered_questions as $item)
+					@foreach ($answers as $item)
 						<tr class="text-xs font-bold">
 							<td class="border-base-content border px-2 py-[0.75px] text-center">{{ $loop->iteration }}</td>
 							<td class="border-base-content border px-2 py-[0.75px]">{{ $item['question'] }}</td>
-							<td class="border-base-content border px-2 py-[0.75px] text-center">{{ $item['availability'] ? '√' : null }}</td>
-							<td class="border-base-content border px-2 py-[0.75px] text-center">{{ !$item['availability'] ? '√' : null }}</td>
-							<td class="border-base-content border px-2 py-[0.75px] text-center">{{ $item['condition'] ? '√' : null }}</td>
-							<td class="border-base-content border px-2 py-[0.75px] text-center">{{ !$item['condition'] ? '√' : null }}</td>
+							<td class="border-base-content border px-2 py-[0.75px] text-center">{{ $item['availability'] === 1 ? '√' : null }}</td>
+							<td class="border-base-content border px-2 py-[0.75px] text-center">{{ $item['availability'] === 0 ? '√' : null }}</td>
+							<td class="border-base-content border px-2 py-[0.75px] text-center">{{ $item['condition'] === 1 ? '√' : null }}</td>
+							<td class="border-base-content border px-2 py-[0.75px] text-center">{{ $item['condition'] === 0 ? '√' : null }}</td>
 							<td class="border-base-content border px-2 py-[0.75px]">{{ $item['note'] }}</td>
 						</tr>
 					@endforeach
@@ -78,14 +78,14 @@
 				@foreach ($inspection_permits::cases() as $item)
 					<div @class([
 						'pdf-checkbox text-sm',
-						'pdf-checkbox-checked' => $item === $data->permit,
+						'pdf-checkbox-checked' => $item === $data->permit->permit,
 					])>
 						{{ $item->label() }}
 						@if ($item->hasNote())
 							(<span @class([
-								'mt-3' => $item !== $data->permit || !$data->permit_note,
+								'mt-3' => $item !== $data->permit->permit || !$data->permit->permit_note,
 								'mx-2 flex-grow border-b border-dotted border-black text-sm/3.5',
-							])>{{ $item === $data->permit ? $data->permit_note : null }}</span>)
+							])>{{ $item === $data->permit->permit ? $data->permit->permit_note : null }}</span>)
 						@endif
 					</div>
 				@endforeach
@@ -105,10 +105,10 @@
 			</thead>
 			<tbody class="text-center">
 				<tr class="h-20">
-					<td class="border-1 pt-14 font-bold">John Doe</td>
-					<td class="border-1 pt-14 font-bold">John Doe</td>
-					<td class="border-1 pt-14 font-bold">Jane Doe</td>
-					<td class="border-1 font-bold">{{ $data->inspection_date->format('d/m/Y') }}</td>
+					<td class="border-1 pt-14 font-bold">{{ $data->permit->tc_name }}</td>
+					<td class="border-1 pt-14 font-bold">{{ $data->permit->operation_name }}</td>
+					<td class="border-1 pt-14 font-bold">{{ $data->permit->she_name }}</td>
+					<td class="border-1 font-bold">{{ $data->permit->inspection_date->format('d/m/Y') }}</td>
 					<td class="border-1 whitespace-nowrap pt-14 font-bold uppercase">Manager Departemen</td>
 				</tr>
 			</tbody>
@@ -123,7 +123,7 @@
 		<div class="h-screen min-h-screen w-full">
 			<p class="mb-2 text-sm font-bold">Catatan :</p>
 			<div class="note-container">
-				{{ $data->inspection_notes }}
+				{{ $data->permit->inspection_notes }}
 			</div>
 		</div>
 	</div>

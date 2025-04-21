@@ -20,7 +20,7 @@
 				@php
 					$disabled = true;
 					if ($this->unitInformationForm->unitExists) {
-					    if ($unitInformationForm->author === $item->author && $unitInformationForm->author !== $she) {
+					    if ($unitInformationForm->author === $item->author && $unitInformationForm->author !== $she && !$unitInformationForm->unit->permit?->she_filled_at) {
 					        $disabled = false;
 					    }
 					}

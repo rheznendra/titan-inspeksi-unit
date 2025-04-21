@@ -3,6 +3,7 @@
 namespace App\Livewire\Forms\UnitInspection;
 
 use App\Enums\InspectionAuthor;
+use App\Models\InspectionPermit;
 use App\Models\InspectionUnit;
 use Illuminate\Support\Facades\Http;
 use Livewire\Form;
@@ -53,6 +54,8 @@ class UnitInformationForm extends Form
         $this->unit = InspectionUnit::firstOrCreate([
             'registration_number' => $this->no_registrasi,
         ], $unit);
+
+        $this->getUser($request);
     }
 
     private function getApi($request = [])
@@ -82,12 +85,26 @@ class UnitInformationForm extends Form
         $this->kilometer = $request['kilometer'] ?? 5000;
         $this->hours_meter = $request['hours_meter'] ?? 5.5;
         $this->brand = $request['brand'] ?? 'HINO';
+    }
 
-        $name = fake()->name();
-        // $name = 'Rheznendra Praditya';
-        $this->name = $request['name'] ?? trim($name);
-        $this->username = $request['username'] ?? mb_strtolower(preg_replace('/[^a-z0-9]/i', '', $name));
+    private function getUser($request)
+    {
         $this->author = $request['author'] ?? $this->authorCases[random_int(0, count($this->authorCases) - 1)]->value;
-        // $this->author = $request['author'] ?? 'TC';
+
+        if ($this->unit->permit?->exists()) {
+            if ($this->author === InspectionAuthor::TC->value) {
+                $name = $this->unit->permit->tc_name ?? fake()->name();
+            } else if ($this->author === InspectionAuthor::OPERATION->value) {
+                $name = $this->unit->permit->operation_name ?? fake()->name();
+            } else if ($this->author === InspectionAuthor::SHE->value) {
+                $name = $this->unit->permit->she_name ?? fake()->name();
+            } else {
+                abort(403, 'Terjadi kesalahan.');
+            }
+        } else {
+            $name = $request['name'] ?? fake()->name();
+        }
+        $this->name = trim($name);
+        $this->username = $request['username'] ?? mb_strtolower(preg_replace('/[^a-z0-9]/i', '', $name));
     }
 }

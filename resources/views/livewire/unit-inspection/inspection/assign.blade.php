@@ -16,6 +16,6 @@
 	@endforeach
 
 	<div class="w-full sm:w-auto sm:flex-1 sm:pl-4">
-		<x-datepicker wire:model="form.inspection_date" label="Tanggal Inspeksi" icon="o-calendar" :disabled="!$unitInformationForm->unitExists || ($unitInformationForm->unit->permit && $unitInformationForm->unit->permit->inspection_date)" required :config="['maxDate' => 'today']" />
+		<x-datepicker wire:model="form.inspection_date" label="Tanggal Inspeksi" icon="o-calendar" :disabled="!$unitInformationForm->unitExists || $unitInformationForm->unit?->permit?->inspection_date" :required="$unitInformationForm->unitExists && !$unitInformationForm->unit?->permit?->inspection_date" :config="['maxDate' => 'today']" />
 	</div>
 </div>
