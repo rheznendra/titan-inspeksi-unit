@@ -66,7 +66,7 @@ class Inspection extends Component
         $this->unitInformationForm->getUnit($unit);
         if ($this->unitInformationForm->unitExists) {
             if ($this->unitInformationForm->unit->permit()->exists()) {
-                $this->form->permit = $this->unitInformationForm->unit->permit->permit;
+                $this->form->permit = $this->unitInformationForm->unit->permit->permit?->value;
                 $this->form->permit_note = $this->unitInformationForm->unit->permit->permit_note;
                 $this->form->inspection_date = $this->unitInformationForm->unit->permit->inspection_date;
                 $this->form->tc_name = $this->unitInformationForm->unit->permit->tc_name;
@@ -101,7 +101,7 @@ class Inspection extends Component
         $img = null;
 
         if ($type === 'front') {
-            $title = 'Ambil Foto Depan';
+            $title = 'Foto Depan';
             $uploadedImage = $this->unitInformationForm->unit->permit?->front_image;
             if (!$uploadedImage) {
                 $img = $this->form->front_image;
@@ -109,7 +109,7 @@ class Inspection extends Component
                 $img = $uploadedImage;
             }
         } else if ($type === 'back') {
-            $title = 'Ambil Foto Belakang';
+            $title = 'Foto Belakang';
             $uploadedImage = $this->unitInformationForm->unit->permit?->back_image;
             if (!$uploadedImage) {
                 $img = $this->form->back_image;
@@ -169,8 +169,7 @@ class Inspection extends Component
         $this->form->validate(
             $this->form->rules(
                 $this->questions(),
-                $this->unitInformationForm->author,
-                $this->unitInformationForm->unit->permit()->exists()
+                $this->unitInformationForm
             ),
             $this->form->messages(),
             $this->form->attributes()
