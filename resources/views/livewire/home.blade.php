@@ -52,9 +52,9 @@
 
 	<!-- FILTER DRAWER -->
 	<x-drawer class="w-full lg:w-1/3" title="Filters" wire:model="drawer" right separator with-close-button>
-		<x-input label="No Registrasi" wire:model="historyDrawer.no_registrasi" />
-		<x-select label="Izin" placeholder="Pilih" wire:model="historyDrawer.permit" :options="$inspectionPermits" option-value="value" option-label="label" />
-		<x-datepicker label="Tanggal Inspeksi" placeholder="Pilih" wire:model="historyDrawer.inspection_date" :config="['maxDate' => 'today']" />
+		<x-input label="No Registrasi" wire:model="historyDrawerForm.no_registrasi" />
+		<x-select label="Izin" placeholder="Pilih" wire:model="historyDrawerForm.permit" :options="$inspectionPermits" option-value="value" option-label="label" />
+		<x-datepicker label="Tanggal Inspeksi" placeholder="Pilih" wire:model="historyDrawerForm.inspection_date" :config="['maxDate' => 'today', 'format' => 'Y-m-d']" />
 		<x-slot:actions>
 			<x-button class="btn-error" label="Reset" icon="o-x-mark" click="clear" spinner />
 			<x-button class="btn-primary" label="Cari" icon="s-magnifying-glass" wire:click="search" spinner="search" />
