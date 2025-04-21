@@ -41,7 +41,9 @@
 
 			@scope('actions', $unit)
 				<div class="flex">
-					<x-button class="btn-ghost btn-circle text-primary" icon="mdi.file-pdf-box" tooltip="Export PDF" link="{{ route('pdf', $unit->ulid) }}" no-wire-navigate />
+					@if ($unit->permit?->she_filled_at)
+						<x-button class="btn-ghost btn-circle text-primary" icon="mdi.file-pdf-box" tooltip="Export PDF" link="{{ route('pdf', $unit->ulid) }}" no-wire-navigate />
+					@endif
 					<x-button class="btn-ghost btn-circle text-success" icon="c-eye" tooltip="Lihat Data" link="{{ route('inspection', ['no_registrasi' => $unit->registration_number]) }}" />
 				</div>
 			@endscope
